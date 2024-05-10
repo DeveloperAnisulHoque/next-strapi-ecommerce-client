@@ -6,9 +6,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { getProductData } from "@/store/features/product/productSlice";
+import { useEffect, useState } from "react";
+
+// product type
+type Product = {
+  id: number;
+  attributes: {
+    name: string;
+    price: number;
+    stock: number;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+  };
+};
 
 export default function Product() {
+  const [productsData, setProductsData] = useState([]);
+
   const { products, loader } = useSelector(getProductData);
+
+  useEffect(() => {
+    setProductsData(products);
+  }, [products]);
+
   return (
     <div>
       <WrapperComponent>
@@ -32,9 +53,7 @@ export default function Product() {
           <hr />
           {/* <==========================product div==========================> */}
           <div className=" flex flex-col  pb-4 gap-4">
-            {/* <==========================single product div==========================> */}
-
-            {products?.map((item, key) => {
+            {productsData?.map((item: Product, key) => {
               return (
                 <div
                   key={key}
